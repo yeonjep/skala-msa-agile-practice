@@ -10,7 +10,7 @@
             <span class="badge" :class="badgeClass">{{ displayCategory }}</span>
             <h1 class="detail-title">{{ course.title }}</h1>
             <p class="detail-desc">
-              {{ course.description || '신선한 식품을 내 식탁에 맞게 골라 정기 구독해 보세요.' }}
+              {{ course.description || '새로운 식품 카테고리를 발견하고, 나에게 맞는 상품을 정기 구독해 보세요.' }}
             </p>
 
             <div class="detail-meta">
@@ -47,7 +47,7 @@
               <ul class="enroll-info-list">
                 <li>✅ 첫 배송 무료</li>
                 <li>✅ 언제든 해지 가능</li>
-                <li>✅ 산지 직송 상품</li>
+                <li>✅ 새로운 공급사 상품 추천</li>
               </ul>
             </div>
           </div>
@@ -87,11 +87,14 @@ const loading = computed(() => courseStore.loading)
 const isInstructor = computed(() => auth.user?.role === 'INSTRUCTOR')
 
 const categoryConfig = {
-  '밀키트': { badge: 'badge-teal', bg: 'thumb-teal', icon: '🍱' },
-  '샐러드': { badge: 'badge-blue', bg: 'thumb-blue', icon: '🥗' },
+  '과일': { badge: 'badge-teal', bg: 'thumb-teal', icon: '🍎' },
+  '채소': { badge: 'badge-blue', bg: 'thumb-blue', icon: '🥬' },
+  '원두': { badge: 'badge-amber', bg: 'thumb-amber', icon: '☕️' },
+  '간편식': { badge: 'badge-pink', bg: 'thumb-pink', icon: '🍲' },
   '베이커리': { badge: 'badge-amber', bg: 'thumb-amber', icon: '🥐' },
   '건강식': { badge: 'badge-purple', bg: 'thumb-purple', icon: '🥬' },
-  '간편식': { badge: 'badge-pink', bg: 'thumb-pink', icon: '🍲' },
+  '유제품': { badge: 'badge-blue', bg: 'thumb-blue', icon: '🥛' },
+  '기타': { badge: 'badge-gray', bg: 'thumb-gray', icon: '🛒' },
 }
 
 const config = computed(() => categoryConfig[course.value?.category] || {})

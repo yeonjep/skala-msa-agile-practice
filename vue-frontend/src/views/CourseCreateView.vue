@@ -58,7 +58,7 @@
                 v-model.trim="form.title"
                 type="text"
                 class="form-input"
-                placeholder="예: 제철 채소 샐러드 정기 구독"
+                placeholder="예: 산지 직송 유기농 채소 정기 구독"
                 maxlength="100"
               />
             </div>
@@ -155,10 +155,14 @@ const submitError = ref('')
 const submitSuccess = ref('')
 
 const categoryOptions = [
-  { label: '밀키트', value: 'BACKEND' },
-  { label: '샐러드', value: 'FRONTEND' },
-  { label: '베이커리', value: 'DEVOPS' },
-  { label: '건강식', value: 'DATA_SCIENCE' }
+  { label: '과일', value: 'BACKEND' },
+  { label: '채소', value: 'FRONTEND' },
+  { label: '원두', value: 'DEVOPS' },
+  { label: '건강식', value: 'DATA_SCIENCE' },
+  { label: '간편식', value: 'MOBILE' },
+  { label: '베이커리', value: 'SECURITY' },
+  { label: '유제품', value: 'DATABASE' },
+  { label: '기타', value: 'OTHER' }
 ]
 
 function handleLogout() {

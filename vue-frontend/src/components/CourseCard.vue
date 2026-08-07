@@ -7,7 +7,10 @@
 
     <!-- 내용 -->
     <div class="card-body">
-      <span class="badge" :class="badgeClass">{{ displayCategory }}</span>
+      <div class="card-badges">
+        <span class="badge" :class="badgeClass">{{ displayCategory }}</span>
+        <span v-if="isNew" class="new-badge">신규</span>
+      </div>
       <h3 class="card-title">{{ course.title }}</h3>
       <div class="card-meta">
         <span class="instructor">공급사 {{ course.instructorName || '-' }}</span>
@@ -28,20 +31,31 @@ const props = defineProps({
 })
 
 const categoryConfig = {
-  '밀키트': { bg: 'thumb-teal', badge: 'badge-teal', icon: '🍱' },
-  '샐러드': { bg: 'thumb-blue', badge: 'badge-blue', icon: '🥗' },
+  '과일': { bg: 'thumb-teal', badge: 'badge-teal', icon: '🍎' },
+  '채소': { bg: 'thumb-blue', badge: 'badge-blue', icon: '🥬' },
+  '원두': { bg: 'thumb-amber', badge: 'badge-amber', icon: '☕️' },
+  '간편식': { bg: 'thumb-pink', badge: 'badge-pink', icon: '🍲' },
   '베이커리': { bg: 'thumb-amber', badge: 'badge-amber', icon: '🥐' },
   '건강식': { bg: 'thumb-purple', badge: 'badge-purple', icon: '🥬' },
-  '간편식': { bg: 'thumb-pink', badge: 'badge-pink', icon: '🍲' },
+  '유제품': { bg: 'thumb-blue', badge: 'badge-blue', icon: '🥛' },
+  '기타': { bg: 'thumb-gray', badge: 'badge-gray', icon: '🛒' },
 }
 
 const categoryLabelMap = {
-  BACKEND: '밀키트',
-  FRONTEND: '샐러드',
-  DEVOPS: '베이커리',
+  BACKEND: '과일',
+  '백엔드': '과일',
+  FRONTEND: '채소',
+  '프론트엔드': '채소',
+  DEVOPS: '원두',
+  '데브옵스': '원두',
   DATA: '건강식',
+  '데이터': '건강식',
   DATA_SCIENCE: '건강식',
-  AI: '간편식',
+  '데이터 사이언스': '건강식',
+  MOBILE: '간편식',
+  SECURITY: '베이커리',
+  DATABASE: '유제품',
+  OTHER: '기타',
 }
 
 const displayCategory = computed(() =>
@@ -51,6 +65,16 @@ const config = computed(() => categoryConfig[displayCategory.value] || { bg: 'th
 const thumbBg = computed(() => config.value.bg)
 const badgeClass = computed(() => config.value.badge)
 const foodIcon = computed(() => config.value.icon || '🍽️')
+
+const isNew = computed(() => {
+  if (!props.course.createdAt) return false
+
+  const createdAt = new Date(props.course.createdAt)
+  if (Number.isNaN(createdAt.getTime())) return false
+
+  const fourteenDays = 14 * 24 * 60 * 60 * 1000
+  return Date.now() - createdAt.getTime() <= fourteenDays
+})
 </script>
 
 <style scoped>
@@ -89,6 +113,21 @@ const foodIcon = computed(() => config.value.icon || '🍽️')
   flex-direction: column;
   gap: 6px;
   flex: 1;
+}
+.card-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.new-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: #fff1f2;
+  color: #e11d48;
+  font-size: 10px;
+  font-weight: 700;
 }
 .card-title {
   font-size: 14px;

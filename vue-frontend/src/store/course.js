@@ -9,16 +9,24 @@ export const useCourseStore = defineStore('course', () => {
   const error = ref(null)
   const selectedCategory = ref('전체')
 
-  const categories = ['전체', '밀키트', '샐러드', '베이커리', '건강식', '간편식']
+  const categories = ['전체', '과일', '채소', '원두', '간편식', '베이커리', '건강식', '유제품', '기타']
 
   // 백엔드 카테고리 → 프론트 표시용 카테고리
   const categoryLabelMap = {
-    BACKEND: '밀키트',
-    FRONTEND: '샐러드',
-    DEVOPS: '베이커리',
+    BACKEND: '과일',
+    '백엔드': '과일',
+    FRONTEND: '채소',
+    '프론트엔드': '채소',
+    DEVOPS: '원두',
+    '데브옵스': '원두',
     DATA: '건강식',
+    '데이터': '건강식',
     DATA_SCIENCE: '건강식',
-    AI: '간편식'
+    '데이터 사이언스': '건강식',
+    MOBILE: '간편식',
+    SECURITY: '베이커리',
+    DATABASE: '유제품',
+    OTHER: '기타'
   }
 
   // 썸네일 이미지 매핑
@@ -32,11 +40,13 @@ export const useCourseStore = defineStore('course', () => {
   }
 
   const categoryThumbnailMap = {
-    '밀키트': thumbnailMap.SPRING,
-    '샐러드': thumbnailMap.VUE,
-    '베이커리': thumbnailMap.KUBERNETES,
+    '과일': thumbnailMap.SPRING,
+    '채소': thumbnailMap.VUE,
+    '원두': thumbnailMap.KUBERNETES,
     '건강식': thumbnailMap.PYTHON,
-    '간편식': thumbnailMap.AI
+    '간편식': thumbnailMap.AI,
+    '베이커리': thumbnailMap.KUBERNETES,
+    '유제품': thumbnailMap.VUE
   }
 
   function normalizeCategory(category) {

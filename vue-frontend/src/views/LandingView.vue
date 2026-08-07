@@ -7,8 +7,8 @@
       <div class="hero-inner">
         <div class="hero-content fade-in-up">
           <span class="hero-badge">맞춤 식품 구독 서비스</span>
-          <h1 class="hero-title">매주 도착하는 신선한 한 끼,<br>내 식탁을 더 건강하게</h1>
-          <p class="hero-desc">밀키트부터 건강식까지, 내 취향에 맞는 식품을 골라 정기 구독해 보세요.</p>
+          <h1 class="hero-title">익숙한 구독은 유지하고,<br>새로운 식품도 발견하세요</h1>
+          <p class="hero-desc">구독 이력과 신규 상품 정보를 바탕으로 과일, 채소, 원두를 새롭게 추천합니다.</p>
           <div class="hero-actions">
             <router-link to="/login" class="btn btn-primary btn-lg">구독 시작하기</router-link>
             <router-link to="/courses" class="btn btn-outline btn-lg">상품 둘러보기</router-link>
@@ -90,17 +90,17 @@
 import AppHeader from '@/components/AppHeader.vue'
 
 const featuredCourses = [
-  { id:1, title:'든든한 한끼 밀키트', category:'밀키트', instructor:'한끼농장', price:'₩89,000', icon:'🍱', thumbBg:'thumb-teal', badgeClass:'badge-teal' },
-  { id:2, title:'제철 채소 샐러드', category:'샐러드', instructor:'그린키친', price:'₩69,000', icon:'🥗', thumbBg:'thumb-teal', badgeClass:'badge-teal' },
-  { id:3, title:'매일 아침 베이커리', category:'베이커리', instructor:'오븐하우스', price:'₩49,000', icon:'🥐', thumbBg:'thumb-blue', badgeClass:'badge-blue' },
-  { id:4, title:'저당 건강식 도시락', category:'건강식', instructor:'웰니스랩', price:'₩79,000', icon:'🥬', thumbBg:'thumb-purple', badgeClass:'badge-purple' },
-  { id:5, title:'간편한 국·찌개 세트', category:'간편식', instructor:'집밥연구소', price:'₩59,000', icon:'🍲', thumbBg:'thumb-pink', badgeClass:'badge-pink' },
-  { id:6, title:'주말 브런치 박스', category:'밀키트', instructor:'테이블온', price:'₩75,000', icon:'🍳', thumbBg:'thumb-amber', badgeClass:'badge-amber' },
+  { id:1, title:'제철 과일 정기 구독', category:'과일', instructor:'햇살과수원', price:'₩39,000', icon:'🍎', thumbBg:'thumb-teal', badgeClass:'badge-teal' },
+  { id:2, title:'유기농 채소 꾸러미', category:'채소', instructor:'초록농장', price:'₩35,000', icon:'🥬', thumbBg:'thumb-blue', badgeClass:'badge-blue' },
+  { id:3, title:'싱글 오리진 원두 구독', category:'원두', instructor:'로스터리온', price:'₩29,000', icon:'☕️', thumbBg:'thumb-amber', badgeClass:'badge-amber' },
+  { id:4, title:'저당 건강식 도시락', category:'건강식', instructor:'웰니스랩', price:'₩49,000', icon:'🥗', thumbBg:'thumb-purple', badgeClass:'badge-purple' },
+  { id:5, title:'간편한 국·찌개 세트', category:'간편식', instructor:'집밥연구소', price:'₩32,000', icon:'🍲', thumbBg:'thumb-pink', badgeClass:'badge-pink' },
+  { id:6, title:'동네 빵집 베이커리 박스', category:'베이커리', instructor:'오븐하우스', price:'₩25,000', icon:'🥐', thumbBg:'thumb-amber', badgeClass:'badge-amber' },
 ]
 
 const features = [
-  { icon:'🥬', title:'신선한 식품 구성', desc:'검증된 공급사의 식품을 카테고리별로 골라볼 수 있습니다.' },
-  { icon:'🎯', title:'맞춤 상품 추천', desc:'구독 이력을 바탕으로 취향에 맞는 식품을 추천합니다.' },
+  { icon:'🥬', title:'다양한 식품 탐색', desc:'과일, 채소, 원두 등 새로운 카테고리의 상품을 만나볼 수 있습니다.' },
+  { icon:'🎯', title:'AI 탐색 추천', desc:'선호 상품과 미탐색 카테고리를 함께 제안해 구독 매너리즘을 줄입니다.' },
   { icon:'💳', title:'간편한 구독 신청', desc:'원클릭 결제로 원하는 식품 구독을 시작할 수 있습니다.' },
   { icon:'📦', title:'정기 배송 안내', desc:'매주 필요한 식품을 편리하게 받아볼 수 있습니다.' },
 ]

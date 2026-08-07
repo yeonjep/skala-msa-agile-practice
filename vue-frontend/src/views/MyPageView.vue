@@ -46,7 +46,17 @@
 
         <!-- 학생 화면 -->
         <section v-if="!isInstructor" class="recommend-section">
-          <h3 class="section-title">추천 상품</h3>
+          <div class="section-head">
+            <div>
+              <h3 class="section-title">AI 탐색 추천</h3>
+              <p class="section-subtitle">선호 상품 3개와 미탐색 카테고리·신규 상품 2개를 균형 있게 추천합니다.</p>
+            </div>
+          </div>
+
+          <div class="recommend-policy-note">
+            <strong>추천 정책 확장</strong>
+            <span>구독·취소·무반응 신호를 반영한 미탐색 카테고리 및 신규 상품 가중치는 추천 서비스에서 확장합니다.</span>
+          </div>
 
           <p v-if="recommendMessage" class="recommend-message">
             {{ recommendMessage }}
@@ -209,12 +219,20 @@ function formatPrice(price) {
 
 function formatCategory(category) {
   const categoryLabelMap = {
-    BACKEND: '밀키트',
-    FRONTEND: '샐러드',
-    DEVOPS: '베이커리',
+    BACKEND: '과일',
+    '백엔드': '과일',
+    FRONTEND: '채소',
+    '프론트엔드': '채소',
+    DEVOPS: '원두',
+    '데브옵스': '원두',
     DATA: '건강식',
+    '데이터': '건강식',
     DATA_SCIENCE: '건강식',
-    AI: '간편식',
+    '데이터 사이언스': '건강식',
+    MOBILE: '간편식',
+    SECURITY: '베이커리',
+    DATABASE: '유제품',
+    OTHER: '기타',
   }
   return categoryLabelMap[category] || category || '-'
 }
@@ -254,13 +272,13 @@ async function loadStudentRecommendations() {
 
     if (Array.isArray(payload?.recommendedCourses)) {
       recommendations.value = payload.recommendedCourses
-      recommendMessage.value = payload.message ?? ''
+      recommendMessage.value = '구독 이력을 바탕으로 새로운 상품을 탐색해 보세요.'
     } else if (Array.isArray(payload?.data)) {
       recommendations.value = payload.data
-      recommendMessage.value = payload.message ?? ''
+      recommendMessage.value = '구독 이력을 바탕으로 새로운 상품을 탐색해 보세요.'
     } else if (Array.isArray(payload)) {
       recommendations.value = payload
-      recommendMessage.value = ''
+      recommendMessage.value = '구독 이력을 바탕으로 새로운 상품을 탐색해 보세요.'
     } else {
       console.warn('[MyPage] unexpected recommendation response shape:', payload)
       recommendations.value = []
@@ -503,6 +521,24 @@ onMounted(async () => {
   margin-bottom: 14px;
   font-size: 13px;
   color: var(--color-text-secondary);
+}
+
+.recommend-policy-note {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  border: 1px solid #d7e7ff;
+  border-radius: var(--radius-md);
+  background: #f5f9ff;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.recommend-policy-note strong {
+  color: var(--color-primary);
 }
 
 .recommend-grid {

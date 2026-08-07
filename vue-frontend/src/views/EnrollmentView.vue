@@ -52,21 +52,29 @@
                 {{ displayCategory(item.course?.category) }}
               </span>
               <h3 class="enroll-title">{{ item.course?.title }}</h3>
-              <p class="enroll-instructor">공급사: {{ item.course?.instructorName }}</p>
+              <p class="enroll-instructor">공급사: {{ item.course?.instructorName || '정보 없음' }}</p>
             </div>
 
             <div class="enroll-status">
               <span
                 :class="[
                   'status-badge',
-                  item.status === 'ACTIVE' ? 'status-active' : 'status-pending'
+                  getStatusClass(item.status)
                 ]"
               >
-                {{ item.status === 'ACTIVE' ? '구독 중' : '구독 접수 · 결제 처리 중' }}
+                {{ getStatusLabel(item.status) }}
               </span>
               <router-link :to="`/courses/${item.courseId}`" class="btn btn-ghost btn-sm">
                 상품 보기
               </router-link>
+              <button
+                v-if="item.status !== 'CANCELLED'"
+                type="button"
+                class="btn btn-cancel btn-sm"
+                @click="cancelSubscription(item)"
+              >
+                구독 취소
+              </button>
             </div>
           </div>
         </div>
@@ -99,20 +107,31 @@ const loading = ref(true)
 const isInstructor = computed(() => auth.user?.role === 'INSTRUCTOR')
 
 const categoryConfig = {
-  '밀키트': { bg: 'thumb-teal', badge: 'badge-teal', icon: '🍱' },
-  '샐러드': { bg: 'thumb-blue', badge: 'badge-blue', icon: '🥗' },
+  '과일': { bg: 'thumb-teal', badge: 'badge-teal', icon: '🍎' },
+  '채소': { bg: 'thumb-blue', badge: 'badge-blue', icon: '🥬' },
+  '원두': { bg: 'thumb-amber', badge: 'badge-amber', icon: '☕️' },
+  '간편식': { bg: 'thumb-pink', badge: 'badge-pink', icon: '🍲' },
   '베이커리': { bg: 'thumb-amber', badge: 'badge-amber', icon: '🥐' },
   '건강식': { bg: 'thumb-purple', badge: 'badge-purple', icon: '🥬' },
-  '간편식': { bg: 'thumb-pink', badge: 'badge-pink', icon: '🍲' },
+  '유제품': { bg: 'thumb-blue', badge: 'badge-blue', icon: '🥛' },
+  '기타': { bg: 'thumb-gray', badge: 'badge-gray', icon: '🛒' },
 }
 
 const categoryLabelMap = {
-  BACKEND: '밀키트',
-  FRONTEND: '샐러드',
-  DEVOPS: '베이커리',
+  BACKEND: '과일',
+  '백엔드': '과일',
+  FRONTEND: '채소',
+  '프론트엔드': '채소',
+  DEVOPS: '원두',
+  '데브옵스': '원두',
   DATA: '건강식',
+  '데이터': '건강식',
   DATA_SCIENCE: '건강식',
-  AI: '간편식',
+  '데이터 사이언스': '건강식',
+  MOBILE: '간편식',
+  SECURITY: '베이커리',
+  DATABASE: '유제품',
+  OTHER: '기타',
 }
 
 function displayCategory(category) {
@@ -129,6 +148,26 @@ function getBadge(cat) {
 
 function getFoodIcon(category) {
   return categoryConfig[displayCategory(category)]?.icon || '🍽️'
+}
+
+function getStatusClass(status) {
+  if (status === 'ACTIVE') return 'status-active'
+  if (status === 'CANCELLED') return 'status-cancelled'
+  return 'status-pending'
+}
+
+function getStatusLabel(status) {
+  if (status === 'ACTIVE') return '구독 중'
+  if (status === 'CANCELLED') return '구독 취소됨'
+  return '구독 접수 · 결제 처리 중'
+}
+
+function cancelSubscription(item) {
+  const confirmed = window.confirm(`'${item.course?.title || '이 상품'}' 구독을 취소할까요?`)
+  if (!confirmed) return
+
+  // 발표용 프론트 상태 처리입니다. 새로고침하면 서버의 기존 상태를 다시 불러옵니다.
+  item.status = 'CANCELLED'
 }
 
 function handleLogout() {
@@ -343,9 +382,25 @@ onMounted(async () => {
   color: #854F0B;
 }
 
+.status-cancelled {
+  background: #F1F1EF;
+  color: #6B6B66;
+}
+
 .btn-sm {
   padding: 7px 14px;
   font-size: 13px;
+}
+
+.btn-cancel {
+  border: 1px solid #fecaca;
+  background: #fff;
+  color: #dc2626;
+}
+
+.btn-cancel:hover {
+  border-color: #fca5a5;
+  background: #fef2f2;
 }
 
 .empty-state {

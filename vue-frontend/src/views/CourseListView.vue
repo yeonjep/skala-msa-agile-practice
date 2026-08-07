@@ -50,6 +50,9 @@
             <p class="page-subtitle" v-if="isInstructor">
               공급사 계정으로 등록된 상품을 확인하고 새 상품을 추가할 수 있습니다.
             </p>
+            <p class="page-subtitle" v-else>
+              새로운 카테고리와 신규 상품도 함께 둘러보세요.
+            </p>
           </div>
 
           <router-link
@@ -73,6 +76,22 @@
           </button>
         </div>
 
+        <div class="sort-bar" aria-label="상품 정렬">
+          <span class="sort-label">정렬</span>
+          <button
+            :class="['sort-button', { active: sortMode === 'POPULAR' }]"
+            @click="sortMode = 'POPULAR'"
+          >
+            인기순
+          </button>
+          <button
+            :class="['sort-button', { active: sortMode === 'NEWEST' }]"
+            @click="sortMode = 'NEWEST'"
+          >
+            신규순
+          </button>
+        </div>
+
         <!-- 로딩 -->
         <div v-if="loading" class="loading-grid">
           <div v-for="i in 6" :key="i" class="skeleton-card">
@@ -86,9 +105,9 @@
         </div>
 
         <!-- 상품 그리드 -->
-        <div v-else-if="filteredCourses.length" class="course-grid fade-in">
+        <div v-else-if="displayedCourses.length" class="course-grid fade-in">
           <CourseCard
-            v-for="course in filteredCourses"
+            v-for="course in displayedCourses"
             :key="course.id"
             :course="course"
           />
@@ -112,7 +131,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '@/components/AppHeader.vue'
 import CourseCard from '@/components/CourseCard.vue'
@@ -127,11 +146,26 @@ const { categories, loading } = courseStore
 
 const selectedCategory = computed(() => courseStore.selectedCategory)
 const isInstructor = computed(() => auth.user?.role === 'INSTRUCTOR')
+const sortMode = ref('POPULAR')
 
 const filteredCourses = computed(() => {
   if (!Array.isArray(courseStore.courses)) return []
   if (selectedCategory.value === '전체') return courseStore.courses
   return courseStore.courses.filter(c => c.category === selectedCategory.value)
+})
+
+const displayedCourses = computed(() => {
+  return [...filteredCourses.value].sort((a, b) => {
+    if (sortMode.value === 'NEWEST') {
+      const dateA = new Date(a.createdAt || 0).getTime()
+      const dateB = new Date(b.createdAt || 0).getTime()
+      return dateB - dateA || Number(b.id || 0) - Number(a.id || 0)
+    }
+
+    const countA = Number(a.enrollmentCount ?? a.enrollment_count ?? 0)
+    const countB = Number(b.enrollmentCount ?? b.enrollment_count ?? 0)
+    return countB - countA || Number(b.id || 0) - Number(a.id || 0)
+  })
 })
 
 function selectCategory(cat) {
@@ -282,6 +316,34 @@ onMounted(() => {
   background: var(--color-primary);
   color: #fff;
   border-color: var(--color-primary);
+}
+
+.sort-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: -8px 0 20px;
+}
+
+.sort-label {
+  margin-right: 4px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.sort-button {
+  border: 0;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 6px;
+}
+
+.sort-button.active {
+  color: var(--color-primary);
+  font-weight: 700;
 }
 
 /* 강의 그리드 */
