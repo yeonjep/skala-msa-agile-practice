@@ -157,6 +157,13 @@
                 <router-link :to="`/courses/${course.id}`" class="action-btn action-primary">
                   상품 보기
                 </router-link>
+                <button
+                  type="button"
+                  class="action-btn action-delete"
+                  @click="deleteCourseFromPage(course)"
+                >
+                  상품 삭제
+                </button>
               </div>
             </div>
           </div>
@@ -209,6 +216,14 @@ const totalEnrollmentCount = computed(() =>
 function handleLogout() {
   auth.logout()
   router.push('/')
+}
+
+function deleteCourseFromPage(course) {
+  const confirmed = window.confirm(`'${course.title}' 상품을 목록에서 삭제할까요?`)
+  if (!confirmed) return
+
+  // 발표용 프론트 상태 처리입니다. 새로고침하면 서버의 기존 상품 목록을 다시 불러옵니다.
+  myCourses.value = myCourses.value.filter(item => Number(item.id) !== Number(course.id))
 }
 
 function formatPrice(price) {
@@ -699,6 +714,7 @@ onMounted(async () => {
 .course-card-actions {
   display: flex;
   justify-content: flex-end;
+  gap: 8px;
 }
 
 .action-btn {
@@ -720,6 +736,19 @@ onMounted(async () => {
 
 .action-primary:hover {
   opacity: 0.92;
+}
+
+.action-delete {
+  border: 1px solid #fecaca;
+  background: #fff;
+  color: #dc2626;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.action-delete:hover {
+  border-color: #fca5a5;
+  background: #fef2f2;
 }
 
 .empty-text {
